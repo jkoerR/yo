@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.droi_mvvm.retrofit.Retrofit_Contract
-import com.example.droi_mvvm.retrofit.Retrofit_Presenter
+//import com.example.droi_mvvm.retrofit.Retrofit_Presenter
 import com.example.droi_mvvm.callback.OnItemClick
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -16,7 +16,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener, Retrofi
     //    lateinit var binding: ActivityCoinBinding
 //    var retrofit_Presenter: Retrofit_Presenter? = null
     //    open  == Public 비슷한 개념 없으면 자바 final 개념
-    var retrofit_Presenter: Retrofit_Presenter? = null
+//    var retrofit_Presenter: Retrofit_Presenter? = null
     var gson = Gson()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

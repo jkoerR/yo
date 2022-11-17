@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.droi_mvvm.retrofit.Retrofit_Contract
-import com.example.droi_mvvm.retrofit.Retrofit_Presenter
+
 import com.example.droi_mvvm.callback.OnItemClick
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 abstract class BaseFragment : Fragment(), View.OnClickListener, Retrofit_Contract.View,
     OnItemClick {
-    var retrofit_Presenter: Retrofit_Presenter? = null
+
     var gson = Gson()
     override fun onStart() {
         super.onStart()

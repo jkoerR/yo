@@ -4,11 +4,10 @@ import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.droi_mvvm.App
 import com.example.droi_mvvm.R
-import com.example.droi_mvvm.retrofit.Retrofit_Contract
-import com.example.droi_mvvm.retrofit.Retrofit_Model
 import com.example.droi_mvvm.model.GDTO
-import com.example.droi_mvvm.retrofit.NetRetrofit
+import com.example.droi_mvvm.retrofit.Retrofit_Contract
 import com.example.droi_mvvm.ui.DetailActivity
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.util.Util
@@ -18,11 +17,11 @@ import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.ArrayList
 
 
-class MainViewModel(application: Application) : AndroidViewModel(application),
-    Retrofit_Contract.model.onModelListener {
+//class MainViewModel(application: Application) : AndroidViewModel(application),
+//    Retrofit_Contract.model.onModelListener {
+class MainViewModel(application: Application) : AndroidViewModel(application){
 
     var gson = Gson()
     var dtos = ArrayList<GDTO.city>()
@@ -30,7 +29,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application),
     var weatherData: MutableLiveData<GDTO.weather_base> = MutableLiveData<GDTO.weather_base>()
 
     val context = getApplication<Application>().applicationContext
-    var retrofit_Model: Retrofit_Model = Retrofit_Model(application.baseContext)
+
 
     init {
     }
@@ -56,39 +55,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application),
     }
 
     fun requsetWeather(id: String) {
-        var jsonObject = JsonObject()
-        jsonObject.addProperty("id", id)
-        jsonObject.addProperty("appid", context.getString(R.string.openweathermap))
-        retrofit_Model.getw(this, jsonObject)
-
-        val call_response: Call<JsonObject?>? = NetRetrofit().getService(context)?.getw(
-            jsonObject?.get("id")?.asString,
-            jsonObject?.get("appid")?.asString,
+        val call_response: Call<JsonObject?>? = App.retrofitService.getw(
+            id,
+            context.getString(R.string.openweathermap),
         )
         call_response?.enqueue(object : Callback<JsonObject?> {
             override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
                 if (response.body() != null) {
                     //                    Logger.loge("response.body()  :  " + response.body());
-                    onFinished(response.body(), "getw")
+//                    onFinished(response.body(), "getw")
+                    weatherData.value = gson.fromJson(response.body().toString(), GDTO.weather_base::class.java)
                 }
             }
-
             override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
 //                App().disProgress()
-                Logger.loge("t.getLocalizedMessage()   :  " + t.localizedMessage)
                 Util.showToast(context, "인터넷 연결상태가 좋지않습니다.")
             }
         })
 
     }
 
-    override fun onFinished(json: JsonObject?, from: String?) {
-        when (from) {
-            "getw" -> {
-                Logger.loge("${json}")
-//                var weather = gson.fromJson(json?.get("weather").toString(),GDTO.weather::class.java)
-                weatherData.value = gson.fromJson(json.toString(), GDTO.weather_base::class.java)
-            }
-        }
-    }
+//    override fun onFinished(json: JsonObject?, from: String?) {
+//        when (from) {
+//            "getw" -> {
+//                Logger.loge("${json}")
+////                var weather = gson.fromJson(json?.get("weather").toString(),GDTO.weather::class.java)
+//                weatherData.value = gson.fromJson(json.toString(), GDTO.weather_base::class.java)
+//            }
+//        }
+//    }
 }

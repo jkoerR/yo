@@ -73,7 +73,7 @@ class NetRetrofit {
     //    RetrofitService service_mms = retrofit_mms.create(RetrofitService.class);
     //    RetrofitService multiService = multiRetrofit.create(RetrofitService.class);
     //    RetrofitService multiService_mms = multiRetrofit_mms.create(RetrofitService.class);
-    fun getService(context: Context?): RetrofitService? {
+    fun getService(context: Context): RetrofitService {
 //        App().showProgress(context)
 //        if (!NetRetrofit.isTimeAutomatic(context)) {
 //            Util.showToast(context, "시간설정을 네트워크에서 제공하는 시간으로 설정해 주세요")
