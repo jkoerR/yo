@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:id="@+id/tv_todo"
+            android:textSize="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_alignStart="@id/tv_todo"
+            android:layout_alignEnd="@id/tv_todo"
+            android:layout_below="@id/tv_todo"
+            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"/>
+    </RelativeLayout>
+</layout>
