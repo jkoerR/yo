@@ -1,4 +1,4 @@
-package com.example.droi_mvvm.ui
+package com.example.droi_mvvm.view
 
 import android.app.Activity
 import android.os.Handler
@@ -7,22 +7,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemFirstBinding
-import com.example.droi_mvvm.model.GDTO
+import com.example.droi_mvvm.model.DC_OP
 import com.example.droi_mvvm.util.DiffCallback
-import com.example.droi_mvvm.util.Logger
-import com.example.droi_mvvm.viewmodel.MainViewModel
 
 class FirstAdapter(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter.TodoViewHolder>(), Filterable {
-    val data : ArrayList<GDTO.city>  = ArrayList()
-    val arr : ArrayList<GDTO.city>  = ArrayList()
+    val data : ArrayList<DC_OP.summoner>  = ArrayList()
+    val arr : ArrayList<DC_OP.summoner>  = ArrayList()
 //    init {
 //        data.addAll(files.value!!)
 //    }
@@ -32,7 +29,7 @@ class FirstAdapter(
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<GDTO.city>, str: String) {
+    fun diff(arr: ArrayList<DC_OP.summoner>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -46,7 +43,7 @@ class FirstAdapter(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<GDTO.city>) {
+    private fun setNewTiles(newTiles: MutableList<DC_OP.summoner>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -71,9 +68,9 @@ class FirstAdapter(
 
     inner class TodoViewHolder(private val binding: ItemFirstBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: GDTO.city) {
+        fun bind(item: DC_OP.summoner) {
             binding.tvTodo.tag = adapterPosition
-            binding.tvTodo.text = "${item.country}   :   ${item.name}"
+//            binding.tvTodo.text = "${item.country}   :   ${item.name}"
             binding.tvTodo.setOnClickListener {
                 listener.onclic(it, adapterPosition)
             }
@@ -89,7 +86,7 @@ class FirstAdapter(
 //                    Logger.loge("performFiltering    ${data}")
                     arr?.addAll(data)
                 } else {
-                    val filteredList = ArrayList<GDTO.city>()
+                    val filteredList = ArrayList<DC_OP.summoner>()
                     for (dto in data!!) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {

@@ -33,10 +33,15 @@ interface RetrofitService {
 //        @Field("id") usr_key: String?,
 //        @Field("appid") app_cd: String?,
 //    ): Call<JsonObject?>?
-    @GET("/data/2.5/weather")
-    fun getw(
-    @Query("id") usr_key: String?,
-    @Query("appid") app_cd: String?,
+    @GET("api/summoner/{id}")
+    fun summoner(
+    @Path("id") id: String?,
+    ): Call<JsonObject?>?
+
+    @GET("api/summoner/{id}/matches")
+    fun matches(
+    @Path("id") id: String?,
+    @Query("lastMatch") lastMatch : String?,
     ): Call<JsonObject?>?
 
 }

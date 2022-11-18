@@ -4,44 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/sfl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/rl_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:visibility="gone"
-                android:id="@+id/rl_btn"
-                android:layout_width="wrap_content"
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_su"
+                android:layout_width="match_parent"
+                android:layerType="hardware"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true">
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="72dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="찾기" />
 
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/et_main"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/rl_btn" />
-
+                android:layout_below="@id/rv_su" />
         </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_first"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/rl_search" />
-    </RelativeLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 </layout>

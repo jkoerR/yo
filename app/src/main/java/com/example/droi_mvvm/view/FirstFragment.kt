@@ -1,4 +1,4 @@
-package com.example.droi_mvvm.ui
+package com.example.droi_mvvm.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droi_mvvm.BaseFragment
 import com.example.droi_mvvm.R
 import com.example.droi_mvvm.databinding.FragmentFirstBinding
-import com.example.droi_mvvm.model.GDTO
+import com.example.droi_mvvm.model.DC_OP
+import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
 import com.example.droi_mvvm.viewmodel.MainViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.android.synthetic.main.fragment_first.*
 
 
@@ -24,7 +25,7 @@ class FirstFragment : BaseFragment() {
     lateinit var firstAdapter: FirstAdapter
 
     //    var data = MutableLiveData<ArrayList<DTOS.recy>>()
-    var data = MutableLiveData<ArrayList<GDTO.city>>()
+//    var data = MutableLiveData<ArrayList<DC_OP.summoner>>()
 
     //    private val model: MainViewModel by viewModels()
     private lateinit var model: MainViewModel
@@ -42,22 +43,38 @@ class FirstFragment : BaseFragment() {
     override fun _init() {
         model = ViewModelProvider(activity as FragmentActivity)[MainViewModel::class.java]
         initRecyclerView()
-//        model.call_assets()
-        model.requsetWeather("")
+        model.requsetSummoner("genetory")
 
     }
 
     private fun initRecyclerView() {
 
-        rv_first.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSu.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         firstAdapter = FirstAdapter(this, requireActivity())
-        binding.rvFirst.adapter = firstAdapter
-        val adapterobsever: Observer<ArrayList<GDTO.city>> =
-            Observer {
-//                data.value = it
-                firstAdapter.diff(it, "")
-            }
-        model.liveData.observe(this, adapterobsever)
+        binding.rvSu.adapter = firstAdapter
+
+//        val adapterobsever: Observer<ArrayList<DC_OP.summoner>> =
+//            Observer {
+////                data.value = it
+//                firstAdapter.diff(it, "")
+//            }
+//        model.liveData_summoner.observe(this, adapterobsever)
+        binding.rvSu.addItemDecoration(CustomRecyclerDecoration_Ho(15))
+
+
+
+
+
+    }
+
+    fun startShimmer(view: ShimmerFrameLayout) {
+        view.showShimmer(true)
+        view.startShimmer()
+    }
+
+    fun stopShimmer(view: ShimmerFrameLayout) {
+        view.stopShimmer()
+        view.hideShimmer()
     }
 
     override fun onclic(v: View, position: Int) {
