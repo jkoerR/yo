@@ -1,26 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_centerInParent="true"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:id="@+id/tv_todo"
-            android:textSize="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:layout_alignStart="@id/tv_todo"
-            android:layout_alignEnd="@id/tv_todo"
-            android:layout_below="@id/tv_todo"
-            android:background="@color/colorPrimary"
+        android:layout_width="240dp"
+        android:layout_height="82dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_ffffff_pale_grey_two_ra4"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_tier"
+            android:layout_marginStart="12dp"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="1dp"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_tier"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginEnd="34dp"
+            android:layout_toEndOf="@id/rl_tier"
+            android:layout_toStartOf="@id/rl_arr"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_type"
+                tools:text="Test text"
+                android:textSize="10sp"
+                android:textColor="@color/soft_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_tier"
+                android:layout_marginTop="2dp"
+                tools:tools="솔랭"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_lp"
+                android:layout_marginTop="2dp"
+                tools:text="솔랭"
+                android:textSize="10sp"
+                android:textColor="@color/gunmetal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_win_lose"
+                android:layout_marginTop="2dp"
+                tools:text="솔랭"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/cool_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_arr"
+            android:background="@drawable/shape_f7f7f9_ra21"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_right" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 </layout>

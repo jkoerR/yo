@@ -10,6 +10,21 @@
 
 
 
+
+    <color name="dark_grey">#1e2022</color>
+    <color name="soft_blue">#5383e8</color>
+    <color name="gunmetal">#52595f</color>
+    <color name="cool_grey">#98a0a7</color>
+    <color name="pale_grey_two">#ebeef1</color>
+    <color name="charcoal_grey">#33383c</color>
+    <color name="darkish_pink">#e84057</color>
+    <color name="azure">#1ea1f7</color>
+
+
+
+
+
+
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>

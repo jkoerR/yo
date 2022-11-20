@@ -10,19 +10,24 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.droi_mvvm.BaseFragment
 import com.example.droi_mvvm.R
 import com.example.droi_mvvm.databinding.FragmentFirstBinding
 import com.example.droi_mvvm.model.DC_OP
 import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
+import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
-import kotlinx.android.synthetic.main.fragment_first.*
 
 
 class FirstFragment : BaseFragment() {
     lateinit var binding: FragmentFirstBinding
     lateinit var firstAdapter: FirstAdapter
+    lateinit var firstAdapter_ver: FirstAdapter_ver
+    var id = "Genetory"
+    var lastMatch = ""
 
     //    var data = MutableLiveData<ArrayList<DTOS.recy>>()
 //    var data = MutableLiveData<ArrayList<DC_OP.summoner>>()
@@ -42,28 +47,113 @@ class FirstFragment : BaseFragment() {
 
     override fun _init() {
         model = ViewModelProvider(activity as FragmentActivity)[MainViewModel::class.java]
-        initRecyclerView()
-        model.requsetSummoner("genetory")
+        binding.rlProfileRef.setOnClickListener(this)
 
+        setObseve()
+        initRecyclerView()
+        startShimmer(binding.sfTop)
+        model.requsetSummoner(id)
+
+    }
+
+    fun setObseve() {
+        model.liveData_summoner.observe(this) {
+//            Logger.loge("it.profileImageUrl  : ${it.profileImageUrl}")
+            Glide.with(requireActivity()).load(it.profileImageUrl).circleCrop().into(binding.ivProfileImg)
+            binding.tvProfileId.text = it.name
+            binding.tvProfileLevel.text = it.level
+            stopShimmer(binding.sfTop)
+            startShimmer(binding.sfBot)
+            model.requsetmatches(id,lastMatch)
+        }
+
+        model.liveData_matches.observe(this) {
+            stopShimmer(binding.sfBot)
+//            Logger.loge("${it.summary}")
+            binding.tv20winLose.text = "${it.summary.wins}승 ${it.summary.losses}패"
+            binding.tvKill.text = "${it.summary.kills}"
+            binding.tvDeath.text = "${it.summary.deaths}"
+            binding.tvAssi.text = "${it.summary.assists}"
+            val kda = String.format("%.2f", (it.summary.kills + it.summary.assists) / it.summary.deaths)
+            binding.tvKda.text = "${kda}:1"
+            val per: Double = it.summary.wins.toDouble().div(20)
+            binding.tvPer.text = "(${(per * 100).toInt()}%)"
+
+            val arr: ArrayList<DC_OP.champions> = model.calcMost(it.champions)
+            if (arr.size >= 2) {
+                Glide.with(requireActivity()).load(arr[0].imageUrl).circleCrop().into(binding.ivMost1)
+                Glide.with(requireActivity()).load(arr[1].imageUrl).circleCrop().into(binding.ivMost2)
+                var m1 = ((arr[0].wins.toDouble() / arr[0].games.toDouble()) * 100).toInt()
+                if (m1 == 100) {
+                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.darkish_pink))
+                } else {
+                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.dark_grey))
+                }
+                binding.tvMost1.text = "${m1}%"
+                var m2 = ((arr[1].wins.toDouble() / arr[1].games.toDouble()) * 100).toInt()
+                if (m2 == 100) {
+                    binding.tvMost2.setTextColor(requireActivity().getColor(R.color.darkish_pink))
+                } else {
+                    binding.tvMost2.setTextColor(requireActivity().getColor(R.color.dark_grey))
+                }
+                binding.tvMost2.text = "${m2}%"
+            } else if (arr.size >= 1) {
+                Glide.with(requireActivity()).load(arr[0].imageUrl).circleCrop().into(binding.ivMost1)
+                var m1 = ((arr[0].wins.toDouble() / arr[0].games.toDouble()) * 100).toInt()
+                if (m1 == 100) {
+                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.darkish_pink))
+                } else {
+                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.dark_grey))
+                }
+                binding.tvMost1.text = "${m1}%"
+            }
+
+            val position = model.calcPosition(it.positions)
+            val posiper = model.calcPosiper(it.positions)
+            binding.tvPositionName.text = position
+            binding.tvPositionPer.text = posiper
+
+        }
     }
 
     private fun initRecyclerView() {
 
-        binding.rvSu.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHo.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         firstAdapter = FirstAdapter(this, requireActivity())
-        binding.rvSu.adapter = firstAdapter
-
-//        val adapterobsever: Observer<ArrayList<DC_OP.summoner>> =
-//            Observer {
-////                data.value = it
-//                firstAdapter.diff(it, "")
-//            }
-//        model.liveData_summoner.observe(this, adapterobsever)
-        binding.rvSu.addItemDecoration(CustomRecyclerDecoration_Ho(15))
-
+        binding.rvHo.adapter = firstAdapter
+        val adapterobsever: Observer<DC_OP.summoner> =
+            Observer {
+//                Logger.loge("it  :  ${it}")
+                firstAdapter.diff(it.leagues, "")
+            }
+        model.liveData_summoner.observe(this, adapterobsever)
+        binding.rvHo.addItemDecoration(CustomRecyclerDecoration_Ho(8))
 
 
+        binding.rvVer.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        firstAdapter_ver = FirstAdapter_ver(this, requireActivity())
+        binding.rvVer.adapter = firstAdapter_ver
+        val adapterobsever_ver: Observer<DC_OP.matches> =
+            Observer {
+                Logger.loge("it  :  ${it}")
+                firstAdapter_ver.diff(it.games, "")
 
+            }
+        model.liveData_matches.observe(this, adapterobsever_ver)
+        binding.rvVer.addItemDecoration(CustomRecyclerDecoration_Ho(15))
+
+
+        binding.rvVer.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!binding.rvVer.canScrollVertically(-1)) {
+//                    Log.i(TAG, "Top of list")
+                } else if (!binding.rvVer.canScrollVertically(1)) {
+                    Logger.loge("End of list")
+                } else {
+//                    Log.i(TAG, "idle")
+                }
+            }
+        })
 
     }
 
@@ -91,9 +181,9 @@ class FirstFragment : BaseFragment() {
         var cPosition: Int?
         var cIntent: Intent?
         when (v.id) {
-//            R.id.btn_modi -> {
-//
-//            }
+            R.id.rl_profile_ref -> {
+                model.requsetSummoner("Genetory")
+            }
             else -> {
 
             }

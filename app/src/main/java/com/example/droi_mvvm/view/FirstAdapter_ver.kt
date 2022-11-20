@@ -9,28 +9,28 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemFirstBinding
+import com.example.droi_mvvm.databinding.ItemFirstVerBinding
 import com.example.droi_mvvm.model.DC_OP
 import com.example.droi_mvvm.util.DiffCallback
 
-class FirstAdapter(
+class FirstAdapter_ver(
     private val listener: OnItemClick,
     val activity: Activity?
-) : RecyclerView.Adapter<FirstAdapter.TodoViewHolder>(), Filterable {
-    val data : ArrayList<DC_OP.leagues>  = ArrayList()
-    val arr : ArrayList<DC_OP.leagues>  = ArrayList()
+) : RecyclerView.Adapter<FirstAdapter_ver.TodoViewHolder>(), Filterable {
+    val data : ArrayList<DC_OP.games>  = ArrayList()
+    val arr : ArrayList<DC_OP.games>  = ArrayList()
 //    init {
 //        data.addAll(files.value!!)
 //    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemFirstBinding.inflate(layoutInflater, parent, false) //TODO match_parent 작동 안할때
+        val binding = ItemFirstVerBinding.inflate(layoutInflater)
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<DC_OP.leagues>, str: String) {
+    fun diff(arr: ArrayList<DC_OP.games>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -44,7 +44,7 @@ class FirstAdapter(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_OP.leagues>) {
+    private fun setNewTiles(newTiles: MutableList<DC_OP.games>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -67,18 +67,14 @@ class FirstAdapter(
 //        holder.bind(items[position])
     }
 
-    inner class TodoViewHolder(private val binding: ItemFirstBinding) :
+    inner class TodoViewHolder(private val binding: ItemFirstVerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_OP.leagues) {
+        fun bind(item: DC_OP.games) {
+//            binding.tvTodo.tag = adapterPosition
+////            binding.tvTodo.text = "${item.country}   :   ${item.name}"
 //            binding.tvTodo.setOnClickListener {
 //                listener.onclic(it, adapterPosition)
 //            }
-            if (activity != null) {
-                Glide.with(activity).load(item.tierRank.imageUrl).into(binding.ivTier)
-            }
-            binding.tvType.text = item.tierRank.name
-            binding.tvWinLose.text = "${item.wins}승 ${item.losses}패"
-
         }
     }
 
@@ -91,7 +87,7 @@ class FirstAdapter(
 //                    Logger.loge("performFiltering    ${data}")
                     arr?.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_OP.leagues>()
+                    val filteredList = ArrayList<DC_OP.games>()
                     for (dto in data!!) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {

@@ -12,4 +12,10 @@
 
     <string name="openweathermap">80330866abb24d57ec56cc44cf800f0e</string>
 
+    <string name="ref">전적갱신</string>
+
+    <string name="game20">최근 20게임 분석</string>
+    <string name="most">모스트 승률</string>
+    <string name="position">포지션</string>
+
 </resources>
