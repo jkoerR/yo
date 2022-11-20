@@ -17,6 +17,7 @@ import com.example.droi_mvvm.R
 import com.example.droi_mvvm.databinding.FragmentFirstBinding
 import com.example.droi_mvvm.model.DC_OP
 import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
+import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ve
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -27,7 +28,7 @@ class FirstFragment : BaseFragment() {
     lateinit var firstAdapter: FirstAdapter
     lateinit var firstAdapter_ver: FirstAdapter_ver
     var id = "Genetory"
-    var lastMatch = ""
+    var lastMatch :Long = 0
 
     //    var data = MutableLiveData<ArrayList<DTOS.recy>>()
 //    var data = MutableLiveData<ArrayList<DC_OP.summoner>>()
@@ -64,6 +65,7 @@ class FirstFragment : BaseFragment() {
             binding.tvProfileLevel.text = it.level
             stopShimmer(binding.sfTop)
             startShimmer(binding.sfBot)
+            lastMatch = 0
             model.requsetmatches(id,lastMatch)
         }
 
@@ -113,6 +115,8 @@ class FirstFragment : BaseFragment() {
             binding.tvPositionName.text = position
             binding.tvPositionPer.text = posiper
 
+            model.liveData_games.postValue(it.games)
+
         }
     }
 
@@ -125,6 +129,7 @@ class FirstFragment : BaseFragment() {
             Observer {
 //                Logger.loge("it  :  ${it}")
                 firstAdapter.diff(it.leagues, "")
+                stopShimmer(binding.sfBot)
             }
         model.liveData_summoner.observe(this, adapterobsever)
         binding.rvHo.addItemDecoration(CustomRecyclerDecoration_Ho(8))
@@ -133,15 +138,12 @@ class FirstFragment : BaseFragment() {
         binding.rvVer.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         firstAdapter_ver = FirstAdapter_ver(this, requireActivity())
         binding.rvVer.adapter = firstAdapter_ver
-        val adapterobsever_ver: Observer<DC_OP.matches> =
+        val adapterobsever_ver: Observer<ArrayList<DC_OP.games>> =
             Observer {
-                Logger.loge("it  :  ${it}")
-                firstAdapter_ver.diff(it.games, "")
-
+                firstAdapter_ver.diff(it, "")
             }
-        model.liveData_matches.observe(this, adapterobsever_ver)
-        binding.rvVer.addItemDecoration(CustomRecyclerDecoration_Ho(15))
-
+        model.liveData_games.observe(this, adapterobsever_ver)
+        binding.rvVer.addItemDecoration(CustomRecyclerDecoration_Ve(4))
 
         binding.rvVer.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -149,6 +151,9 @@ class FirstFragment : BaseFragment() {
 //                    Log.i(TAG, "Top of list")
                 } else if (!binding.rvVer.canScrollVertically(1)) {
                     Logger.loge("End of list")
+                    lastMatch = model.liveData_matches.value?.games?.get(model.liveData_matches.value?.games!!.size-1)?.createDate!!
+                    model.requsetmatches(id,lastMatch)
+
                 } else {
 //                    Log.i(TAG, "idle")
                 }

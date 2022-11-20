@@ -32,9 +32,9 @@ class DC_OP {
         var champion: champion = champion(),
         var spells: ArrayList<spells> = ArrayList(),
         var items: ArrayList<items> = ArrayList(),
-        var createDate: Int = 0,
+        var createDate: Long = 0,
         var gameType: String = "",
-        var gameLength: Int = 0,
+        var gameLength: Long = 0,
         var isWin: Boolean = false,
         var stats: stats = stats(),
     )
@@ -62,6 +62,7 @@ class DC_OP {
         var assist: Int = 0,
         var opScoreBadge: String = "",
         var contributionForKillRate: String = "",
+        var largestMultiKillString: String = "",
     )
 
     data class champions(

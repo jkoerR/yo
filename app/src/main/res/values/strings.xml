@@ -17,5 +17,6 @@
     <string name="game20">최근 20게임 분석</string>
     <string name="most">모스트 승률</string>
     <string name="position">포지션</string>
+    <string name="kill">킬관여</string>
 
 </resources>

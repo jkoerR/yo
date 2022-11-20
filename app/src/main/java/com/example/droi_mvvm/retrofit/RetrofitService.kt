@@ -41,7 +41,7 @@ interface RetrofitService {
     @GET("api/summoner/{id}/matches")
     fun matches(
     @Path("id") id: String?,
-    @Query("lastMatch") lastMatch : String?,
+    @Query("lastMatch") lastMatch : Long?,
     ): Call<JsonObject?>?
 
 }

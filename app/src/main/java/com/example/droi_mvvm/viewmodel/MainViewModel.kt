@@ -20,6 +20,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var gson = Gson()
     var dtos = ArrayList<DC_OP.summoner>()
     var liveData_matches: MutableLiveData<DC_OP.matches> = MutableLiveData<DC_OP.matches>()
+    var liveData_games: MutableLiveData<ArrayList<DC_OP.games>> = MutableLiveData<ArrayList<DC_OP.games>>()
     var liveData_summoner: MutableLiveData<DC_OP.summoner> = MutableLiveData<DC_OP.summoner>()
     val context = getApplication<Application>().applicationContext
 
@@ -50,7 +51,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun requsetmatches(id: String,lastMatch: String) {
+    fun requsetmatches(id: String,lastMatch: Long) {
         val call_response: Call<JsonObject?>? = App.retrofitService.matches(
             id,
             lastMatch,
@@ -60,7 +61,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 if (response.body() != null) {
 //                    Logger.loge("response.body()  :  " + response.body());
 //                    liveData_games.value = gson.fromJson(response.body()!!.get("games").asJsonArray, ArrayList<DC_OP.games>()::class.java)
-                    liveData_matches.postValue(gson.fromJson(response.body()!!, DC_OP.matches()::class.java))
+                    if (lastMatch != 0L){
+                        val game = liveData_games.value
+                        game?.addAll(gson.fromJson(response.body()!!, DC_OP.matches()::class.java).games)
+                        liveData_games.postValue(game!!)
+                    }else{
+                        liveData_matches.postValue(gson.fromJson(response.body()!!, DC_OP.matches()::class.java))
+                    }
+
                 }
             }
 
