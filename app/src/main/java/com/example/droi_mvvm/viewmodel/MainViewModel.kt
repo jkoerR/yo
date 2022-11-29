@@ -37,7 +37,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 //                    onFinished(response.body(), "getw")
                     liveData_ResRecruit.value = gson.fromJson(response.body(), DC_JOB.ResRecruit::class.java)
 //                    liveData_summoner.postValue(gson.fromJson(response.body()!!.get("summoner"), DC_OP.summoner::class.java))
-                    Logger.loge("liveData_summoner  :  ${liveData_ResRecruit.value}")
+                    Logger.loge("liveData_ResRecruit  :  ${liveData_ResRecruit.value}")
                 }
             }
 
@@ -57,7 +57,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 //                    onFinished(response.body(), "getw")
                     liveData_ResCell.value = gson.fromJson(response.body(), DC_JOB.ResCell::class.java)
 //                    liveData_summoner.postValue(gson.fromJson(response.body()!!.get("summoner"), DC_OP.summoner::class.java))
-                    Logger.loge("liveData_summoner  :  ${liveData_ResCell.value}")
+                    Logger.loge("liveData_ResCell  :  ${liveData_ResCell.value}")
                 }
             }
 

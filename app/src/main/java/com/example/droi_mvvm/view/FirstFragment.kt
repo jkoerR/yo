@@ -24,8 +24,8 @@ import com.facebook.shimmer.ShimmerFrameLayout
 
 class FirstFragment : BaseFragment() {
     lateinit var binding: FragmentFirstBinding
-    lateinit var firstAdapter: FirstAdapter
-    lateinit var firstAdapter_ver: FirstAdapter_ver
+//    lateinit var firstAdapter: FirstAdapter
+//    lateinit var firstAdapter_ver: FirstAdapter_ver
 
     //    var data = MutableLiveData<ArrayList<DTOS.recy>>()
 //    var data = MutableLiveData<ArrayList<DC_OP.summoner>>()
@@ -119,7 +119,7 @@ class FirstFragment : BaseFragment() {
     private fun initRecyclerView() {
 
         binding.rvHo.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        firstAdapter = FirstAdapter(this, requireActivity())
+//        firstAdapter = FirstAdapter(this, requireActivity())
 //        binding.rvHo.adapter = firstAdapter
 //        val adapterobsever: Observer<DC_JOB.summoner> =
 //            Observer {
