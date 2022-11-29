@@ -1,2 +1,2 @@
-rootProject.name = "droi_mvvm_opgg"
+rootProject.name = "droi_job"
 include ':app'

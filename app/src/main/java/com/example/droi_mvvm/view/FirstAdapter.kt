@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemFirstBinding
-import com.example.droi_mvvm.model.DC_OP
+import com.example.droi_mvvm.model.DC_JOB
 import com.example.droi_mvvm.util.DiffCallback
 
 class FirstAdapter(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter.TodoViewHolder>(), Filterable {
-    val data : ArrayList<DC_OP.leagues>  = ArrayList()
-    val arr : ArrayList<DC_OP.leagues>  = ArrayList()
+    val data : ArrayList<DC_JOB.leagues>  = ArrayList()
+    val arr : ArrayList<DC_JOB.leagues>  = ArrayList()
 //    init {
 //        data.addAll(files.value!!)
 //    }
@@ -30,7 +30,7 @@ class FirstAdapter(
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<DC_OP.leagues>, str: String) {
+    fun diff(arr: ArrayList<DC_JOB.leagues>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -44,7 +44,7 @@ class FirstAdapter(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_OP.leagues>) {
+    private fun setNewTiles(newTiles: MutableList<DC_JOB.leagues>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -69,7 +69,7 @@ class FirstAdapter(
 
     inner class TodoViewHolder(private val binding: ItemFirstBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_OP.leagues) {
+        fun bind(item: DC_JOB.leagues) {
 //            binding.tvTodo.setOnClickListener {
 //                listener.onclic(it, adapterPosition)
 //            }
@@ -91,7 +91,7 @@ class FirstAdapter(
 //                    Logger.loge("performFiltering    ${data}")
                     arr?.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_OP.leagues>()
+                    val filteredList = ArrayList<DC_JOB.leagues>()
                     for (dto in data!!) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {

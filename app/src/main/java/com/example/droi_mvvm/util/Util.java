@@ -59,7 +59,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -129,12 +132,13 @@ public class Util extends AppCompatActivity {
 //    }
 
 
-    public static String getBase64encode(String content){
+    public static String getBase64encode(String content) {
 
         return Base64.encodeToString(content.getBytes(), 0);
 
     }
-    public static String getBase64decode(String content){
+
+    public static String getBase64decode(String content) {
 
         return new String(Base64.decode(content, 0));
 
@@ -206,26 +210,26 @@ public class Util extends AppCompatActivity {
 
     public static void getReleaseHashKey() {
         byte[] sha1 = {
-                (byte)0xF8,
-                (byte)0x59,
-                (byte)0x73,
-                (byte)0x5F,
-                (byte)0xA7,
-                (byte)0x50,
-                (byte)0x52,
-                (byte)0xB4,
-                (byte)0x47,
-                (byte)0xF0,
-                (byte)0x54,
-                (byte)0xDD,
-                (byte)0x14,
-                (byte)0xE1,
-                (byte)0xCB,
-                (byte)0x0E,
-                (byte)0x77,
-                (byte)0xDC,
-                (byte)0xE2,
-                (byte)0xA6
+                (byte) 0xF8,
+                (byte) 0x59,
+                (byte) 0x73,
+                (byte) 0x5F,
+                (byte) 0xA7,
+                (byte) 0x50,
+                (byte) 0x52,
+                (byte) 0xB4,
+                (byte) 0x47,
+                (byte) 0xF0,
+                (byte) 0x54,
+                (byte) 0xDD,
+                (byte) 0x14,
+                (byte) 0xE1,
+                (byte) 0xCB,
+                (byte) 0x0E,
+                (byte) 0x77,
+                (byte) 0xDC,
+                (byte) 0xE2,
+                (byte) 0xA6
         };
         Logger.loge("getReleaseHashKey: " + Base64.encodeToString(sha1, Base64.NO_WRAP));
     }
@@ -289,10 +293,6 @@ public class Util extends AppCompatActivity {
 
 
     public static long diffTime(String before, String interval) {
-//        Gson gson = new Gson();
-//        ArrayList mArray = (ArrayList<String>) gson.fromJson(list,
-//                new TypeToken<ArrayList>() {}.getType());
-
         long diff = 0;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -721,8 +721,6 @@ public class Util extends AppCompatActivity {
 
         return jsonObject;
     }
-
-
 
 
     // Preferences
@@ -1275,6 +1273,128 @@ public class Util extends AppCompatActivity {
 
         }
     };
+
+
+//    public static int solution(String phone_number) {
+//        int answer = 0;
+//
+//        Pattern PATTERN1 = Pattern.compile("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$");
+//        Pattern PATTERN2 = Pattern.compile("^01(?:0|1|[6-9])\\d{8}$");
+//        Pattern PATTERN3 = Pattern.compile("(0|(\\+?82))[-\\s\\.]?(1)(0|1|6)[-\\s\\.]?\\d{3,4}[-\\s\\.]?\\d{4}");
+//        if (PATTERN1.matcher(phone_number).matches()){
+//            answer = 1;
+//        }else if(PATTERN2.matcher(phone_number).matches()){
+//            answer = 2;
+//        }else if(PATTERN3.matcher(phone_number).matches()){
+//            answer = 3;
+//        }else{
+//            answer = -1;
+//        }
+//
+//        return answer;
+//    }
+
+
+//    public static boolean solution(int a, int b, int c, int d, int e, int f) {
+//        boolean answer = true;
+//        boolean abc = true;
+//        boolean bbc = true;
+//        boolean cbc = true;
+//        while (abc || bbc || cbc){
+//            if (a>=d){
+//                a = a-2;
+//                b++;
+//            }else{
+//                abc = false;
+//            }
+//            if (b>d){
+//                b = b-2;
+//                c++;
+//            }else{
+//                bbc = false;
+//            }
+//            if (c>f){
+//                c = c-2;
+//                a++;
+//            }else{
+//                cbc = false;
+//            }
+////            Logger.loge("a  :  "+a);
+////            Logger.loge("b  :  "+b);
+////            Logger.loge("c  :  "+c);
+////            Logger.loge("d  :  "+d);
+////            Logger.loge("e  :  "+e);
+////            Logger.loge("f  :  "+f);
+//            if (a>=d&&b>=e&&c>=f){
+//                answer = true;
+//                break;
+//            }else{
+//                answer = false;
+//            }
+//        }
+//        return answer;
+//    }
+
+    public static int[] solution(int n, int[][] quests) {
+//        int[] answer = {};
+        int q = 1;
+        int nonecount = 0;
+        int aCount = 0;
+        int bCount = 0;
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        boolean s = true;
+        while (result.size() < n){
+//            for (int[] quest : quests){
+            aCount = 0;
+            bCount = 0;
+            for (int[] a : quests){
+                if (a[1] == q){
+                    aCount++;
+                }
+            }
+            for (int i = 0; i< quests.length;i++){
+                if (q == quests[i][1]){
+//                    Logger.loge("result.contains(quest[0]  :  "   +  result.contains(quests[i][0]));
+//                    Logger.loge("aCount  :  "  +  aCount);
+//                    Logger.loge("Collections.frequency(result, q )  :  "  +  Collections.frequency(result, q ));
+//                    if (Collections.frequency(result, q ) == aCount){
+                    if (result.contains(quests[i][0])){
+//                        s = true;
+//                        break;
+                        bCount++;
+                    }else{
+                        s = false;
+                    }
+                    if (bCount == aCount){
+                        s = true;
+                        break;
+                    }
+                }else{
+                    nonecount++;
+                }
+                if (nonecount == quests.length-1)s = true;
+            }
+//            Logger.loge("q  :  "  +  q);
+//            Logger.loge("!result.contains(q)  :  "  +  result.contains(q));
+            if (s&&!result.contains(q)){
+                result.add(q);
+            }
+//            for (int a : result){
+//                Logger.loge("int num  :  " + a);
+//            }
+            q++;
+            if (q > n){
+                q = 1;
+            }
+            nonecount = 0;
+            s = false;
+        }
+        int[] answer = new int[result.size()];
+        for (int i = 0 ; i < result.size() ; i++) {
+            answer[i] = result.get(i).intValue();
+        }
+        return answer;
+    }
 
 
 }

@@ -1,19 +1,9 @@
 <resources>
-    <string name="app_name">droiopgg</string>
+    <string name="app_name">droi job</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
-    <string name="openweathermap">80330866abb24d57ec56cc44cf800f0e</string>
 
     <string name="ref">전적갱신</string>
-
     <string name="game20">최근 20게임 분석</string>
     <string name="most">모스트 승률</string>
     <string name="position">포지션</string>

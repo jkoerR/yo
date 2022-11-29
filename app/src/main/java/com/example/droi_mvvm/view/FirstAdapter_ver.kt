@@ -14,10 +14,8 @@ import com.bumptech.glide.Glide
 import com.example.droi_mvvm.R
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemFirstVerBinding
-import com.example.droi_mvvm.model.DC_OP
+import com.example.droi_mvvm.model.DC_JOB
 import com.example.droi_mvvm.util.DiffCallback
-import com.example.droi_mvvm.util.Logger
-import com.example.droi_mvvm.util.Util
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,8 +23,8 @@ class FirstAdapter_ver(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter_ver.TodoViewHolder>(), Filterable {
-    val data : ArrayList<DC_OP.games>  = ArrayList()
-    val arr : ArrayList<DC_OP.games>  = ArrayList()
+    val data : ArrayList<DC_JOB.games>  = ArrayList()
+    val arr : ArrayList<DC_JOB.games>  = ArrayList()
 //    init {
 //        data.addAll(files.value!!)
 //    }
@@ -36,7 +34,7 @@ class FirstAdapter_ver(
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<DC_OP.games>, str: String) {
+    fun diff(arr: ArrayList<DC_JOB.games>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -50,7 +48,7 @@ class FirstAdapter_ver(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_OP.games>) {
+    private fun setNewTiles(newTiles: MutableList<DC_JOB.games>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -75,8 +73,8 @@ class FirstAdapter_ver(
 
     inner class TodoViewHolder(private val binding: ItemFirstVerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_OP.games) {
-            Logger.loge("item   :  ${item}")
+        fun bind(item: DC_JOB.games) {
+//            Logger.loge("item   :  ${item}")
             if (activity != null) {
                 Glide.with(activity).load(item.champion.imageUrl).circleCrop().into(binding.ivItemVerChamp)
                 Glide.with(activity).load(item.spells[0].imageUrl).into(binding.ivItemVerSpell1)
@@ -137,7 +135,7 @@ class FirstAdapter_ver(
 //                    Logger.loge("performFiltering    ${data}")
                     arr?.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_OP.games>()
+                    val filteredList = ArrayList<DC_JOB.games>()
                     for (dto in data!!) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {
@@ -174,8 +172,8 @@ class FirstAdapter_ver(
 
     fun formatTimeString(regTime: Long): String? {
         val curTime = System.currentTimeMillis() /1000L
-        Logger.loge("curTime  :  $curTime")
-        Logger.loge("regTime  :  $regTime")
+//        Logger.loge("curTime  :  $curTime")
+//        Logger.loge("regTime  :  $regTime")
         var diffTime = (curTime - regTime) / 1000
         var msg: String? = null
         if (diffTime < TIME_MAXIMUM.SEC) {
