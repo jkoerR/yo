@@ -86,13 +86,13 @@ class FirstAdapter_recruit(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence): FilterResults {
                 val charString = constraint.toString()
-                arr!!.clear()
+                arr.clear()
                 if (charString.length < 2) {
 //                    Logger.loge("performFiltering    ${data}")
-                    arr?.addAll(data)
+                    arr.addAll(data)
                 } else {
                     val filteredList = ArrayList<DC_JOB.recruit_items>()
-                    for (dto in data!!) {
+                    for (dto in data) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {
 //                                filteredList.add(dto);
@@ -103,7 +103,7 @@ class FirstAdapter_recruit(
 //                            }
 //                        }
                     }
-                    arr!!.addAll(filteredList)
+                    arr.addAll(filteredList)
                 }
                 val filterResults = FilterResults()
                 filterResults.values = arr
