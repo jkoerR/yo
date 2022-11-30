@@ -3,12 +3,19 @@ package com.example.droi_mvvm.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.droi_mvvm.App
 import com.example.droi_mvvm.model.DC_JOB
+import com.example.droi_mvvm.retrofit.NetRetrofit
+import com.example.droi_mvvm.retrofit.RetrofitService
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.util.Util
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +25,7 @@ import retrofit2.Response
 //    Retrofit_Contract.model.onModelListener {
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+    var retrofitService : RetrofitService = NetRetrofit().getRetrofitService()
     var gson = Gson()
     var liveData_ResRecruit: MutableLiveData<DC_JOB.ResRecruit> = MutableLiveData<DC_JOB.ResRecruit>()
     var liveData_ResCell: MutableLiveData<DC_JOB.ResCell> = MutableLiveData<DC_JOB.ResCell>()
@@ -28,44 +36,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun requsetRecruit() {
-        val call_response: Call<JsonObject?>? = App.retrofitService.recruit(
-        )
-        call_response?.enqueue(object : Callback<JsonObject?> {
-            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                if (response.body() != null) {
-//                    Logger.loge("response.body()  :  " + response.body());
-//                    onFinished(response.body(), "getw")
-                    liveData_ResRecruit.value = gson.fromJson(response.body(), DC_JOB.ResRecruit::class.java)
-//                    liveData_summoner.postValue(gson.fromJson(response.body()!!.get("summoner"), DC_OP.summoner::class.java))
-                    Logger.loge("liveData_ResRecruit  :  ${liveData_ResRecruit.value}")
-                }
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofitService.recruit()
+            if (response.isSuccessful){
+                liveData_ResRecruit.postValue(gson.fromJson(response.body(), DC_JOB.ResRecruit::class.java))
+            }else{
+                Util.showToast(context, "${response.code()} ${response.message()}")
             }
+        }
 
-            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                App().disProgress()
-                Util.showToast(context, "인터넷 연결상태가 좋지않습니다.")
-            }
-        })
+
     }
     fun requsetCell() {
-        val call_response: Call<JsonObject?>? = App.retrofitService.cell(
-        )
-        call_response?.enqueue(object : Callback<JsonObject?> {
-            override fun onResponse(call: Call<JsonObject?>, response: Response<JsonObject?>) {
-                if (response.body() != null) {
-//                    Logger.loge("response.body()  :  " + response.body());
-//                    onFinished(response.body(), "getw")
-                    liveData_ResCell.value = gson.fromJson(response.body(), DC_JOB.ResCell::class.java)
-//                    liveData_summoner.postValue(gson.fromJson(response.body()!!.get("summoner"), DC_OP.summoner::class.java))
-                    Logger.loge("liveData_ResCell  :  ${liveData_ResCell.value}")
-                }
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = retrofitService.cell()
+            if (response.isSuccessful){
+                liveData_ResCell.postValue(gson.fromJson(response.body(), DC_JOB.ResCell::class.java))
+            }else{
+                Util.showToast(context, "${response.code()} ${response.message()}")
             }
-
-            override fun onFailure(call: Call<JsonObject?>, t: Throwable) {
-//                App().disProgress()
-                Util.showToast(context, "인터넷 연결상태가 좋지않습니다.")
-            }
-        })
+        }
     }
-
 }

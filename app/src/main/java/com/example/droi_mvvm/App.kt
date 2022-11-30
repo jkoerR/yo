@@ -4,15 +4,13 @@ import android.app.Application
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
-import com.everything.inlot.retrofit.RetrofitService
+import com.example.droi_mvvm.retrofit.RetrofitService
 import com.example.droi_mvvm.retrofit.NetRetrofit
 import com.example.droi_mvvm.util.Util
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import com.google.gson.JsonObject
 import okhttp3.CookieJar
-import retrofit2.Call
 import java.util.*
 
 class App : Application() {
@@ -27,7 +25,7 @@ class App : Application() {
         instance = this
         gMapTmpChunk = HashMap()
         cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(this))
-        retrofitService = NetRetrofit().getService(this)
+//        retrofitService = NetRetrofit().getService(this)
     }
 
     companion object {
@@ -55,8 +53,7 @@ class App : Application() {
         }
 
         lateinit var cookieJar: CookieJar
-        lateinit var retrofitService : RetrofitService
-
+//        lateinit var retrofitService : RetrofitService
     }
 
     override fun onTerminate() {

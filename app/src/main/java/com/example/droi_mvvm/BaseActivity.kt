@@ -23,7 +23,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onClick(v: View) {
     }
-    override fun onclic(v: View, position: Int) {
+    override fun oneClick(v: View, position: Int) {
 
     }
 }

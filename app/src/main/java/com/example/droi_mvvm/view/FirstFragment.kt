@@ -7,16 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.droi_mvvm.BaseFragment
 import com.example.droi_mvvm.R
 import com.example.droi_mvvm.databinding.FragmentFirstBinding
-import com.example.droi_mvvm.model.DC_JOB
-import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
-import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ve
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -24,13 +19,9 @@ import com.facebook.shimmer.ShimmerFrameLayout
 
 class FirstFragment : BaseFragment() {
     lateinit var binding: FragmentFirstBinding
-//    lateinit var firstAdapter: FirstAdapter
-//    lateinit var firstAdapter_ver: FirstAdapter_ver
 
-    //    var data = MutableLiveData<ArrayList<DTOS.recy>>()
-//    var data = MutableLiveData<ArrayList<DC_OP.summoner>>()
-
-    //    private val model: MainViewModel by viewModels()
+    lateinit var firstAdapter: FirstAdapter_recruit
+    lateinit var firstAdapter_ver: FirstAdapter_cell
     private lateinit var model: MainViewModel
 
     override fun onCreateView(
@@ -56,6 +47,7 @@ class FirstFragment : BaseFragment() {
 
     fun setObseve() {
         model.liveData_ResRecruit.observe(this) {
+            Logger.loge("liveData_ResRecruit  : ${it}")
 //            Logger.loge("it.profileImageUrl  : ${it.profileImageUrl}")
 //            Glide.with(requireActivity()).load(it.profileImageUrl).circleCrop().into(binding.ivProfileImg)
 //            binding.tvProfileId.text = it.name
@@ -66,54 +58,10 @@ class FirstFragment : BaseFragment() {
 //            model.requsetmatches(id,lastMatch)
         }
 
-//        model.liveData_matches.observe(this) {
-//            stopShimmer(binding.sfBot)
-//            Logger.loge("${it.summary}")
-//            binding.tv20winLose.text = "${it.summary.wins}승 ${it.summary.losses}패"
-//            binding.tvKill.text = "${it.summary.kills}"
-//            binding.tvDeath.text = "${it.summary.deaths}"
-//            binding.tvAssi.text = "${it.summary.assists}"
-//            val kda = String.format("%.2f", (it.summary.kills + it.summary.assists) / it.summary.deaths)
-//            binding.tvKda.text = "${kda}:1"
-//            val per: Double = it.summary.wins.toDouble().div(20)
-//            binding.tvPer.text = "(${(per * 100).toInt()}%)"
-//
-//            val arr: ArrayList<DC_OP.champions> = model.calcMost(it.champions)
-//            if (arr.size >= 2) {
-//                Glide.with(requireActivity()).load(arr[0].imageUrl).circleCrop().into(binding.ivMost1)
-//                Glide.with(requireActivity()).load(arr[1].imageUrl).circleCrop().into(binding.ivMost2)
-//                var m1 = ((arr[0].wins.toDouble() / arr[0].games.toDouble()) * 100).toInt()
-//                if (m1 == 100) {
-//                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.darkish_pink))
-//                } else {
-//                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.dark_grey))
-//                }
-//                binding.tvMost1.text = "${m1}%"
-//                var m2 = ((arr[1].wins.toDouble() / arr[1].games.toDouble()) * 100).toInt()
-//                if (m2 == 100) {
-//                    binding.tvMost2.setTextColor(requireActivity().getColor(R.color.darkish_pink))
-//                } else {
-//                    binding.tvMost2.setTextColor(requireActivity().getColor(R.color.dark_grey))
-//                }
-//                binding.tvMost2.text = "${m2}%"
-//            } else if (arr.size >= 1) {
-//                Glide.with(requireActivity()).load(arr[0].imageUrl).circleCrop().into(binding.ivMost1)
-//                var m1 = ((arr[0].wins.toDouble() / arr[0].games.toDouble()) * 100).toInt()
-//                if (m1 == 100) {
-//                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.darkish_pink))
-//                } else {
-//                    binding.tvMost1.setTextColor(requireActivity().getColor(R.color.dark_grey))
-//                }
-//                binding.tvMost1.text = "${m1}%"
-//            }
-//
-//            val position = model.calcPosition(it.positions)
-//            val posiper = model.calcPosiper(it.positions)
-//            binding.tvPositionName.text = position
-//            binding.tvPositionPer.text = posiper
-//
-//            model.liveData_games.postValue(it.games)
-//        }
+        model.liveData_ResCell.observe(this) {
+            Logger.loge("liveData_ResCell  : ${it}")
+        }
+
     }
 
     private fun initRecyclerView() {
@@ -168,7 +116,7 @@ class FirstFragment : BaseFragment() {
         view.hideShimmer()
     }
 
-    override fun onclic(v: View, position: Int) {
+    override fun oneClick(v: View, position: Int) {
 //        Log.e("onclic", "${v.id}  :  ${position}")
         when (v.id) {
 //            R.id.tv_todo -> {

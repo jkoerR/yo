@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
 //            }
         }
     }
-    override fun onclic(v: View, position: Int) {
+    override fun oneClick(v: View, position: Int) {
         when(v.id){
 //            R.id.tv_todo ->{
 //                model.modi(position)
