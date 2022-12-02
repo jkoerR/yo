@@ -4,13 +4,14 @@ import android.app.Application
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
-import com.example.droi_mvvm.retrofit.RetrofitService
-import com.example.droi_mvvm.retrofit.NetRetrofit
 import com.example.droi_mvvm.util.Util
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import okhttp3.CookieJar
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
 import java.util.*
 
 class App : Application() {
@@ -25,6 +26,16 @@ class App : Application() {
         instance = this
         gMapTmpChunk = HashMap()
         cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(this))
+
+        startKoin {
+            androidContext(this@App)
+//            androidLogger()
+            // 위의 메서드 2개는 없어도 작동하긴 한다
+            /* modules() : 컨테이너에 로드할 Koin 모듈 목록 설정. listOf()로 appModule을 구성한 예제가 있었다 */
+            modules(appModule)
+        }
+
+
 //        retrofitService = NetRetrofit().getService(this)
     }
 

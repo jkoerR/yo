@@ -9,7 +9,6 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemRecruitBinding
 import com.example.droi_mvvm.model.DC_JOB
@@ -19,8 +18,8 @@ class FirstAdapter_recruit(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter_recruit.TodoViewHolder>(), Filterable {
-    val data : ArrayList<DC_JOB.recruit_items>  = ArrayList()
-    val arr : ArrayList<DC_JOB.recruit_items>  = ArrayList()
+    val data : ArrayList<DC_JOB.Recruit_items>  = ArrayList()
+    val arr : ArrayList<DC_JOB.Recruit_items>  = ArrayList()
 //    init {
 //        data.addAll(files.value!!)
 //    }
@@ -30,7 +29,7 @@ class FirstAdapter_recruit(
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<DC_JOB.recruit_items>, str: String) {
+    fun diff(arr: ArrayList<DC_JOB.Recruit_items>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -44,7 +43,7 @@ class FirstAdapter_recruit(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_JOB.recruit_items>) {
+    private fun setNewTiles(newTiles: MutableList<DC_JOB.Recruit_items>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -69,7 +68,8 @@ class FirstAdapter_recruit(
 
     inner class TodoViewHolder(private val binding: ItemRecruitBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_JOB.recruit_items) {
+        fun bind(item: DC_JOB.Recruit_items) {
+            binding.item = item
 //            binding.tvTodo.setOnClickListener {
 //                listener.onclic(it, adapterPosition)
 //            }
@@ -91,7 +91,7 @@ class FirstAdapter_recruit(
 //                    Logger.loge("performFiltering    ${data}")
                     arr.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_JOB.recruit_items>()
+                    val filteredList = ArrayList<DC_JOB.Recruit_items>()
                     for (dto in data) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {

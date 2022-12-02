@@ -22,8 +22,8 @@ class FirstAdapter_cell(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
-    val data: ArrayList<DC_JOB.cell_items> = ArrayList()
-    val arr: ArrayList<DC_JOB.cell_items> = ArrayList()
+    val data: ArrayList<DC_JOB.Cell_items> = ArrayList()
+    val arr: ArrayList<DC_JOB.Cell_items> = ArrayList()
 
     //    init {
 //        data.addAll(files.value!!)
@@ -46,7 +46,7 @@ class FirstAdapter_cell(
         }
     }
 
-    fun diff(arr: ArrayList<DC_JOB.cell_items>, str: String) {
+    fun diff(arr: ArrayList<DC_JOB.Cell_items>, str: String) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -60,7 +60,7 @@ class FirstAdapter_cell(
         notifyDataSetChanged()
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_JOB.cell_items>) {
+    private fun setNewTiles(newTiles: MutableList<DC_JOB.Cell_items>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -110,13 +110,13 @@ class FirstAdapter_cell(
 
     inner class TodoViewHolderCell(private val binding: ItemCellBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_JOB.cell_items) {
+        fun bind(item: DC_JOB.Cell_items) {
 //            binding.tvTodo.text = "${item.city}"
         }
     }
     inner class TodoViewHolderHo(private val binding: ItemHoThemeBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_JOB.cell_items) {
+        fun bind(item: DC_JOB.Cell_items) {
 //            binding.tvDate.text = "${item.date}"
 //            binding.tvWeather.text = "${item.weather}"
 //            binding.tvMax.text = "Max : ${item.max}"
@@ -136,7 +136,7 @@ class FirstAdapter_cell(
 //                    Logger.loge("performFiltering    ${data}")
                     arr?.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_JOB.cell_items>()
+                    val filteredList = ArrayList<DC_JOB.Cell_items>()
                     for (dto in data!!) {
 //                        if (dto.buyAdvertisingStatus != "") {
 //                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {

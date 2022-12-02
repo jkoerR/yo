@@ -20,6 +20,7 @@ import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
+import org.koin.android.ext.android.inject
 
 
 class FirstFragment : BaseFragment() {
@@ -27,7 +28,8 @@ class FirstFragment : BaseFragment() {
 
     lateinit var firstAdapter_recruit: FirstAdapter_recruit
     lateinit var firstAdapter_cell: FirstAdapter_cell
-    private lateinit var model: MainViewModel
+//    private lateinit var model: MainViewModel
+    private val model: MainViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +42,7 @@ class FirstFragment : BaseFragment() {
     }
 
     override fun _init() {
-        model = ViewModelProvider(activity as FragmentActivity)[MainViewModel::class.java]
+//        model = ViewModelProvider(activity as FragmentActivity)[MainViewModel::class.java]
 //        et_fm_reportstore_find.addTextChangedListener(object : TextWatcher {
 //            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 //            }

@@ -23,13 +23,13 @@ import retrofit2.Response
 
 //class MainViewModel(application: Application) : AndroidViewModel(application),
 //    Retrofit_Contract.model.onModelListener {
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application,private val repo: RetrofitService) : BaseViewModel(application) {
 
-    var retrofitService : RetrofitService = NetRetrofit().getRetrofitService()
+//    var retrofitService : RetrofitService = NetRetrofit().getRetrofitService()
     var gson = Gson()
     var liveData_ResRecruit: MutableLiveData<DC_JOB.ResRecruit> = MutableLiveData<DC_JOB.ResRecruit>()
     var liveData_ResCell: MutableLiveData<DC_JOB.ResCell> = MutableLiveData<DC_JOB.ResCell>()
-    val context = getApplication<Application>().applicationContext
+    val context = application
 
     init {
 
@@ -37,21 +37,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun requsetRecruit() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = retrofitService.recruit()
+            val response = repo.recruit()
             if (response.isSuccessful){
-                liveData_ResRecruit.postValue(gson.fromJson(response.body(), DC_JOB.ResRecruit::class.java))
+                liveData_ResRecruit.postValue(response.body())
             }else{
                 Util.showToast(context, "${response.code()} ${response.message()}")
             }
         }
-
-
     }
     fun requsetCell() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = retrofitService.cell()
+            val response = repo.cell()
             if (response.isSuccessful){
-                liveData_ResCell.postValue(gson.fromJson(response.body(), DC_JOB.ResCell::class.java))
+                liveData_ResCell.postValue(response.body())
             }else{
                 Util.showToast(context, "${response.code()} ${response.message()}")
             }
