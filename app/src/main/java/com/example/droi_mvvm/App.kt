@@ -22,7 +22,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (Util.mContext == null) Util.mContext = this
         instance = this
         gMapTmpChunk = HashMap()
         cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(this))

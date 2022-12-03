@@ -1,26 +1,36 @@
 package com.example.droi_mvvm.view
 
 import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.droi_mvvm.R
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemRecruitBinding
 import com.example.droi_mvvm.model.DC_JOB
 import com.example.droi_mvvm.util.DiffCallback
+import com.example.droi_mvvm.util.Logger
+import com.example.droi_mvvm.util.Util
+import java.util.*
 
 class FirstAdapter_recruit(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter_recruit.TodoViewHolder>(), Filterable {
-    val data : ArrayList<DC_JOB.Recruit_items>  = ArrayList()
-    val arr : ArrayList<DC_JOB.Recruit_items>  = ArrayList()
-//    init {
+    val data: ArrayList<DC_JOB.Recruit_items> = ArrayList()
+    val arr: ArrayList<DC_JOB.Recruit_items> = ArrayList()
+
+    //    init {
 //        data.addAll(files.value!!)
 //    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -58,6 +68,7 @@ class FirstAdapter_recruit(
     override fun getItemCount(): Int {
         return arr.size
     }
+
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
 //        Logger.loge("${files.value!![position]}")
         arr[position].let {
@@ -65,6 +76,7 @@ class FirstAdapter_recruit(
         }
 //        holder.bind(items[position])
     }
+
 
     inner class TodoViewHolder(private val binding: ItemRecruitBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -74,8 +86,27 @@ class FirstAdapter_recruit(
 //                listener.onclic(it, adapterPosition)
 //            }
             if (activity != null) {
-//                Glide.with(activity).load(item.tierRank.imageUrl).into(binding.ivTier)
+                Glide.with(activity).load(item.image_url).centerCrop().into(binding.ivItemRecruit)
+                binding.rlItemRecruit.setBackgroundResource(R.drawable.shape_tran_ra8)
+                binding.rlItemRecruit.clipToOutline = true
             }
+            var high = 0f
+            for (rating in item.company.ratings){
+                if (rating.rating > high)high = rating.rating
+            }
+            binding.tvRating.text = "$high"
+            val slp = item.appeal.split(",")
+//            Logger.loge("${slp}")
+            val inflater = activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            for ((i,str) in slp.withIndex()) {
+                if (i<2 && str!="") {
+                    binding.llAppeal.addView(inflater.inflate(R.layout.item_infl, binding.llAppeal, false))
+                    val tv_apper = binding.llAppeal.getChildAt(i).findViewById<View>(R.id.tv_apper) as TextView
+                    tv_apper.text = str
+                }
+            }
+            val won = Util.myFormatter(item.reward)
+            binding.tvReward.text = won
 //            binding.tvType.text = item.tierRank.name
 //            binding.tvWinLose.text = "${item.wins}승 ${item.losses}패"
 
@@ -93,15 +124,13 @@ class FirstAdapter_recruit(
                 } else {
                     val filteredList = ArrayList<DC_JOB.Recruit_items>()
                     for (dto in data) {
-//                        if (dto.buyAdvertisingStatus != "") {
-//                            if (dto.buyAdvertisingStatus?.contains(charString) == true) {
-//                                filteredList.add(dto);
-//                            }
-//                        } else {
-//                            if (dto.buyAdvertisingStatusName?.contains(charString) == true) {
-//                                filteredList.add(dto);
-//                            }
-//                        }
+                        if (dto.title.lowercase(Locale.getDefault()).contains(charString.lowercase(Locale.getDefault()))) {
+                            filteredList.add(dto);
+                            continue
+                        }
+                        if (dto.company.name.lowercase(Locale.getDefault()).contains(charString.lowercase(Locale.getDefault()))) {
+                            filteredList.add(dto);
+                        }
                     }
                     arr.addAll(filteredList)
                 }
@@ -111,7 +140,7 @@ class FirstAdapter_recruit(
             }
 
             override fun publishResults(constraint: CharSequence, results: FilterResults) {
-//                Logger.loge("${results.values}")
+                Logger.loge("${results.values}")
                 notifyDataSetChanged()
             }
         }

@@ -3,10 +3,15 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
 
-    <string name="ref">전적갱신</string>
-    <string name="game20">최근 20게임 분석</string>
-    <string name="most">모스트 승률</string>
-    <string name="position">포지션</string>
-    <string name="kill">킬관여</string>
+    <string name="hint">기업, 채용공고 검색</string>
+    <string name="employment">채용</string>
+    <string name="enterprise">기업</string>
+    <string name="none">검색결과가 없습니다</string>
+    <string name="reward">보상금:</string>
+    <string name="won">원</string>
+    <string name="subtitle">인기 급상승 채용 공고</string>
+    <string name="avg">평균연봉</string>
+    <string name="manwon">만원</string>
+    <string name="interview">면접 질문</string>
 
 </resources>

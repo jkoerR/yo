@@ -8,13 +8,22 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.droi_mvvm.Const
+import com.example.droi_mvvm.R
 import com.example.droi_mvvm.callback.OnItemClick
 import com.example.droi_mvvm.databinding.ItemCellBinding
 import com.example.droi_mvvm.databinding.ItemHoThemeBinding
 import com.example.droi_mvvm.model.DC_JOB
+import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
+import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ve
 import com.example.droi_mvvm.util.DiffCallback
+import com.example.droi_mvvm.util.Logger
+import com.example.droi_mvvm.util.Util
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,6 +33,7 @@ class FirstAdapter_cell(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
     val data: ArrayList<DC_JOB.Cell_items> = ArrayList()
     val arr: ArrayList<DC_JOB.Cell_items> = ArrayList()
+    lateinit var firstAdapter_recruit: FirstAdapter_recruit
 
     //    init {
 //        data.addAll(files.value!!)
@@ -72,8 +82,8 @@ class FirstAdapter_cell(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(arr[position].cell_type){
-            Const.CELL_TYPE_COMPANY ->{
+        return when (arr[position].cell_type) {
+            Const.CELL_TYPE_COMPANY -> {
                 0
             }
             Const.CELL_TYPE_HORIZONTAL_THEME -> {
@@ -111,19 +121,26 @@ class FirstAdapter_cell(
     inner class TodoViewHolderCell(private val binding: ItemCellBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DC_JOB.Cell_items) {
-//            binding.tvTodo.text = "${item.city}"
+            binding.item = item
+            if (activity != null) {
+                Glide.with(activity).load(item.logo_path).placeholder(R.drawable.user).centerCrop().into(binding.ivItemCell)
+                binding.rlItemCell.setBackgroundResource(R.drawable.shape_tran_ra4)
+                binding.rlItemCell.clipToOutline = true
+            }
+            binding.tvDate.text = Util.getDateFormatTime(item.update_date)
         }
     }
+
+
     inner class TodoViewHolderHo(private val binding: ItemHoThemeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DC_JOB.Cell_items) {
-//            binding.tvDate.text = "${item.date}"
-//            binding.tvWeather.text = "${item.weather}"
-//            binding.tvMax.text = "Max : ${item.max}"
-//            binding.tvMin.text = "Min : ${item.min}"
-//            if (activity != null) {
-//                Glide.with(activity).load(item.tierRank.imageUrl).into(binding.ivTier)
-//            }
+            binding.rvItemHoTheme.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+//            binding.rvRecruit.layoutManager = GridLayoutManager(requireActivity(),2)
+            firstAdapter_recruit = FirstAdapter_recruit(listener, activity)
+            binding.rvItemHoTheme.adapter = firstAdapter_recruit
+            firstAdapter_recruit.diff(item.recommend_recruit, "")
+            binding.rvItemHoTheme.addItemDecoration(CustomRecyclerDecoration_Ho(12))
         }
     }
 

@@ -11,12 +11,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.droi_mvvm.BaseFragment
 import com.example.droi_mvvm.R
 import com.example.droi_mvvm.databinding.FragmentFirstBinding
 import com.example.droi_mvvm.model.DC_JOB
 import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ho
+import com.example.droi_mvvm.ui.CustomRecyclerDecoration_Ve
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -43,86 +45,91 @@ class FirstFragment : BaseFragment() {
 
     override fun _init() {
 //        model = ViewModelProvider(activity as FragmentActivity)[MainViewModel::class.java]
-//        et_fm_reportstore_find.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                Logger.loge("${p0.toString()}")
-//                if (p0.toString().isNotEmpty()) {
-////                    iv_fm_reportstore_find.visibility = View.VISIBLE
-//                    firstAdapter_recruit.filter?.filter("#${p0.toString()}")
-//                } else {
-////                    iv_fm_reportstore_find.visibility = View.GONE
-//                    firstAdapter_recruit.filter?.filter("")
-//                }
-//            }
-//            override fun afterTextChanged(p0: Editable?) {
-//            }
-//        })
+
+        binding.rlEmployment.setOnClickListener(this)
+        binding.rlEnterprise.setOnClickListener(this)
 
 
-        setObseve()
+        binding.etJobplanet.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.toString().isNotEmpty()) {
+//                    iv_fm_reportstore_find.visibility = View.VISIBLE
+                    firstAdapter_recruit.filter?.filter("${p0.toString()}")
+                    firstAdapter_cell.filter?.filter("${p0.toString()}")
+                    if (firstAdapter_recruit.arr.size==0){
+                        binding.tvRecruit.visibility = View.VISIBLE
+                    }else{
+                        binding.tvRecruit.visibility = View.GONE
+                    }
+//                    Logger.loge("firstAdapter_cell.arr.size  ${firstAdapter_cell.arr.size}")
+                    if (firstAdapter_cell.arr.size==0){
+                        binding.tvCell.visibility = View.VISIBLE
+                    }else{
+                        binding.tvCell.visibility = View.GONE
+                    }
+                } else {
+//                    iv_fm_reportstore_find.visibility = View.GONE
+                    firstAdapter_recruit.filter?.filter("")
+                    binding.tvRecruit.visibility = View.GONE
+                    firstAdapter_cell.filter?.filter("")
+                    binding.tvCell.visibility = View.GONE
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+//        setObseve()
         initRecyclerView()
         startShimmer(binding.sfRecruit)
         model.requsetRecruit()
         model.requsetCell()
     }
 
-    fun setObseve() {
-//        model.liveData_ResRecruit.observe(this) {
-//            Logger.loge("liveData_ResRecruit  : ${it}")
-////            Logger.loge("it.profileImageUrl  : ${it.profileImageUrl}")
-////            Glide.with(requireActivity()).load(it.profileImageUrl).circleCrop().into(binding.ivProfileImg)
-////            binding.tvProfileId.text = it.name
-////            binding.tvProfileLevel.text = it.level
-////            stopShimmer(binding.sfTop)
-////            startShimmer(binding.sfBot)
-////            lastMatch = 0
-////            model.requsetmatches(id,lastMatch)
-//        }
-//        model.liveData_ResCell.observe(this) {
-//            Logger.loge("liveData_ResCell  : ${it}")
-//        }
-    }
+//    fun setObseve() {
+////        model.liveData_ResRecruit.observe(this) {
+////            Logger.loge("liveData_ResRecruit  : ${it}")
+//////            Logger.loge("it.profileImageUrl  : ${it.profileImageUrl}")
+//////            Glide.with(requireActivity()).load(it.profileImageUrl).circleCrop().into(binding.ivProfileImg)
+//////            binding.tvProfileId.text = it.name
+//////            binding.tvProfileLevel.text = it.level
+//////            stopShimmer(binding.sfTop)
+//////            startShimmer(binding.sfBot)
+//////            lastMatch = 0
+//////            model.requsetmatches(id,lastMatch)
+////        }
+////        model.liveData_ResCell.observe(this) {
+////            Logger.loge("liveData_ResCell  : ${it}")
+////        }
+//    }
 
     private fun initRecyclerView() {
 
-        binding.rvRecruit.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+//        binding.rvRecruit.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.rvRecruit.layoutManager = GridLayoutManager(requireActivity(),2)
         firstAdapter_recruit = FirstAdapter_recruit(this, requireActivity())
         binding.rvRecruit.adapter = firstAdapter_recruit
-        val adapterobsever: Observer<DC_JOB.ResRecruit> =
+        val adapterobseverRecruit: Observer<DC_JOB.ResRecruit> =
             Observer {
                 firstAdapter_recruit.diff(it.recruit_items, "")
                 stopShimmer(binding.sfRecruit)
             }
-        model.liveData_ResRecruit.observe(this, adapterobsever)
-        binding.rvRecruit.addItemDecoration(CustomRecyclerDecoration_Ho(8))
+        model.liveData_ResRecruit.observe(this, adapterobseverRecruit)
+        binding.rvRecruit.addItemDecoration(CustomRecyclerDecoration_Ho(12))
+        binding.rvRecruit.addItemDecoration(CustomRecyclerDecoration_Ve(20))
 
-//        binding.rvVer.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-//        firstAdapter_ver = FirstAdapter_ver(this, requireActivity())
-//        binding.rvVer.adapter = firstAdapter_ver
-//        val adapterobsever_ver: Observer<ArrayList<DC_JOB.games>> =
-//            Observer {
-//                firstAdapter_ver.diff(it, "")
-//            }
-//        model.liveData_games.observe(this, adapterobsever_ver)
-//        binding.rvVer.addItemDecoration(CustomRecyclerDecoration_Ve(4))
-//
-//        binding.rvVer.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!binding.rvVer.canScrollVertically(-1)) {
-////                    Log.i(TAG, "Top of list")
-//                } else if (!binding.rvVer.canScrollVertically(1)) {
-//                    Logger.loge("End of list")
-//                    lastMatch = model.liveData_matches.value?.games?.get(model.liveData_matches.value?.games!!.size-1)?.createDate!!
-//                    model.requsetmatches(id,lastMatch)
-//
-//                } else {
-////                    Log.i(TAG, "idle")
-//                }
-//            }
-//        })
+        binding.rvCell.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        firstAdapter_cell = FirstAdapter_cell(this, requireActivity())
+        binding.rvCell.adapter = firstAdapter_cell
+        val adapterobseverCell: Observer<DC_JOB.ResCell> =
+            Observer {
+                firstAdapter_cell.diff(it.cell_items, "")
+                stopShimmer(binding.sfCell)
+            }
+        model.liveData_ResCell.observe(this, adapterobseverCell)
+//        binding.rvCell.addItemDecoration(CustomRecyclerDecoration_Ho(12))
+//        binding.rvCell.addItemDecoration(CustomRecyclerDecoration_Ve(20))
 
     }
 
@@ -150,9 +157,22 @@ class FirstFragment : BaseFragment() {
         var cPosition: Int?
         var cIntent: Intent?
         when (v.id) {
-//            R.id.rl_profile_ref -> {
-////                model.requsetSummoner("Genetory")
-//            }
+            R.id.rl_employment -> {
+                binding.rlEmployment.setBackgroundResource(R.drawable.shape_green_ra15)
+                binding.rlEnterprise.setBackgroundResource(R.drawable.shape_ffffff_gray03_ra15)
+                binding.tvEmployment.setTextColor(requireActivity().getColor(R.color.white))
+                binding.tvEnterprise.setTextColor(requireActivity().getColor(R.color.cool_grey))
+                binding.sfRecruit.visibility = View.VISIBLE
+                binding.sfCell.visibility = View.GONE
+            }
+            R.id.rl_enterprise -> {
+                binding.rlEmployment.setBackgroundResource(R.drawable.shape_ffffff_gray03_ra15)
+                binding.rlEnterprise.setBackgroundResource(R.drawable.shape_green_ra15)
+                binding.tvEmployment.setTextColor(requireActivity().getColor(R.color.cool_grey))
+                binding.tvEnterprise.setTextColor(requireActivity().getColor(R.color.white))
+                binding.sfRecruit.visibility = View.GONE
+                binding.sfCell.visibility = View.VISIBLE
+            }
             else -> {
 
             }

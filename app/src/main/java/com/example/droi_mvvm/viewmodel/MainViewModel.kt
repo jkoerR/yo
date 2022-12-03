@@ -41,7 +41,7 @@ class MainViewModel(application: Application,private val repo: RetrofitService) 
             if (response.isSuccessful){
                 liveData_ResRecruit.postValue(response.body())
             }else{
-                Util.showToast(context, "${response.code()} ${response.message()}")
+                Util.showToast("${response.code()} ${response.message()}")
             }
         }
     }
@@ -51,7 +51,7 @@ class MainViewModel(application: Application,private val repo: RetrofitService) 
             if (response.isSuccessful){
                 liveData_ResCell.postValue(response.body())
             }else{
-                Util.showToast(context, "${response.code()} ${response.message()}")
+                Util.showToast("${response.code()} ${response.message()}")
             }
         }
     }
