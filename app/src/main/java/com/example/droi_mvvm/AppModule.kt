@@ -15,7 +15,7 @@ val appModule = module {
     // Simple Presenter Factory
     /* factory : 호출될 때마다 객체 생성 */
 //    factory { ApiViewModel(get()) }
-//    factory {MainViewModel(get(),get())}
-    viewModel {MainViewModel(get(),get())}
+//  factory {MainViewModel(get(),get())}
+    single {MainViewModel(get(),get())}
     factory { FirstFragment() }
 }

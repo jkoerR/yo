@@ -1,17 +1,6 @@
 <resources>
-    <string name="app_name">droi job</string>
+    <string name="app_name">droi yo</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-
-    <string name="hint">기업, 채용공고 검색</string>
-    <string name="employment">채용</string>
-    <string name="enterprise">기업</string>
-    <string name="none">검색결과가 없습니다</string>
-    <string name="reward">보상금:</string>
-    <string name="won">원</string>
-    <string name="subtitle">인기 급상승 채용 공고</string>
-    <string name="avg">평균연봉</string>
-    <string name="manwon">만원</string>
-    <string name="interview">면접 질문</string>
 
 </resources>

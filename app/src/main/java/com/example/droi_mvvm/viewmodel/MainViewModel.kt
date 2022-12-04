@@ -1,58 +1,74 @@
 package com.example.droi_mvvm.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.droi_mvvm.App
-import com.example.droi_mvvm.model.DC_JOB
-import com.example.droi_mvvm.retrofit.NetRetrofit
+import com.example.droi_mvvm.db.AppDatabase
+import com.example.droi_mvvm.db.Contacts
+import com.example.droi_mvvm.model.DC_yo
 import com.example.droi_mvvm.retrofit.RetrofitService
 import com.example.droi_mvvm.util.Logger
 import com.example.droi_mvvm.util.Util
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-//class MainViewModel(application: Application) : AndroidViewModel(application),
-//    Retrofit_Contract.model.onModelListener {
-class MainViewModel(application: Application,private val repo: RetrofitService) : BaseViewModel(application) {
+class MainViewModel(application: Application, private val repo: RetrofitService) : BaseViewModel(application) {
 
-//    var retrofitService : RetrofitService = NetRetrofit().getRetrofitService()
     var gson = Gson()
-    var liveData_ResRecruit: MutableLiveData<DC_JOB.ResRecruit> = MutableLiveData<DC_JOB.ResRecruit>()
-    var liveData_ResCell: MutableLiveData<DC_JOB.ResCell> = MutableLiveData<DC_JOB.ResCell>()
+    var liveData_Res: MutableLiveData<DC_yo.Res> = MutableLiveData<DC_yo.Res>()
+    var change: Int  = -1;
     val context = application
 
     init {
 
     }
 
-    fun requsetRecruit() {
+    fun requsetUsers() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repo.recruit()
-            if (response.isSuccessful){
-                liveData_ResRecruit.postValue(response.body())
-            }else{
+            val response = repo.users("shop")
+            if (response.isSuccessful) {
+                response.body()?.let { setLike(it) }
+            } else {
+                var handler = android.os.Handler(Looper.getMainLooper())
                 Util.showToast("${response.code()} ${response.message()}")
             }
         }
     }
-    fun requsetCell() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repo.cell()
-            if (response.isSuccessful){
-                liveData_ResCell.postValue(response.body())
-            }else{
-                Util.showToast("${response.code()} ${response.message()}")
+
+    fun setLike(body: DC_yo.Res) {
+        val db = AppDatabase.getInstance(context)
+        for ((i, b) in body.items.withIndex()) {
+            val result = db?.contactsDao()?.findByResult(b.id)
+            if (result != null) {
+                b.like = true
+                body.items[i] = b
             }
         }
+        liveData_Res.postValue(body)
     }
+
+    fun isLike(position: Int) {
+        val db = AppDatabase.getInstance(context)
+        val res = liveData_Res.value
+        val item = res?.items?.get(position)
+        if (item != null) {
+            val result = db?.contactsDao()?.findByResult(item.id)
+            Logger.loge("result   ${result}")
+            if (result == null) {
+                db?.contactsDao()?.insert(Contacts(0,item.id))
+                item.like = true
+            } else {
+                db.contactsDao().delete(result)
+                item.like = false
+            }
+            res.items[position] = item
+            change = position
+            liveData_Res.postValue(res!!)
+        }
+    }
+
+//    https://api.github.com/search/users?q=shop
 }

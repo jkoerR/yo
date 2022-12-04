@@ -1,5 +1,7 @@
 package com.example.droi_mvvm.util;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,18 +32,21 @@ public class Util extends AppCompatActivity {
     }
 
     public static void showToast(String str) {
-        Toast toast;
-        toast = Toast.makeText(App.Companion.getInstance(), str, Toast.LENGTH_SHORT);
-//        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 200);
 
-//        LinearLayout toastLayout = (LinearLayout) toast.getView();
-//        TextView toastTV = (TextView) toastLayout.getChildAt(0);
-//        toastTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-        try {
-            toast.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast;
+                toast = Toast.makeText(App.Companion.getInstance(), str, Toast.LENGTH_SHORT);
+                try {
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
     public static String myFormatter(Double num) {
         try {

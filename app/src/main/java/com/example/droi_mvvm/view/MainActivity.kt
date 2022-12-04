@@ -5,8 +5,10 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
+import androidx.room.Room
 import com.example.droi_mvvm.*
 import com.example.droi_mvvm.databinding.ActivityMainBinding
+import com.example.droi_mvvm.db.AppDatabase
 import com.example.droi_mvvm.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
 
