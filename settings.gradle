@@ -1,2 +1,4 @@
-rootProject.name = "droi_job"
-include ':app'
+rootProject.name = "droi_yo"
+include ':presentation'
+include ':domain'
+include ':data'
