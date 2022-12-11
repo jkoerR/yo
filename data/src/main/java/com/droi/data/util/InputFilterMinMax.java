@@ -25,7 +25,7 @@
  * $Id: StringEncrypter.java 65 2007-12-14 15:29:49Z JO Hyeong-ryeol $
  * 
  */
-package com.droi.util;
+package com.droi.data.util;
 
 import android.text.InputFilter;
 import android.text.Spanned;

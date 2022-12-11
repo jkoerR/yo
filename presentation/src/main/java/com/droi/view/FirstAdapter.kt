@@ -13,16 +13,16 @@ import com.bumptech.glide.Glide
 import com.droi.R
 import com.droi.callback.OnItemClick
 import com.droi.databinding.ItemFirstBinding
-import com.droi.model.DC_yo
-import com.droi.util.DiffCallback
+import com.droi.domain.model.YoEntity
+import com.droi.data.util.DiffCallback
 import java.util.*
 
 class FirstAdapter(
     private val listener: OnItemClick,
     val activity: Activity?
 ) : RecyclerView.Adapter<FirstAdapter.TodoViewHolder>(), Filterable {
-    val data: ArrayList<DC_yo.Items> = ArrayList()
-    val arr: ArrayList<DC_yo.Items> = ArrayList()
+    val data: ArrayList<YoEntity.Items> = ArrayList()
+    val arr: ArrayList<YoEntity.Items> = ArrayList()
 
     //    init {
 //        data.addAll(files.value!!)
@@ -33,7 +33,7 @@ class FirstAdapter(
         return TodoViewHolder(binding)
     }
 
-    fun diff(arr: ArrayList<DC_yo.Items>, str: String, change: Int) {
+    fun diff(arr: ArrayList<YoEntity.Items>, str: String, change: Int) {
         val tileDiffUtilCallback = DiffCallback(this.arr, arr)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(tileDiffUtilCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -51,7 +51,7 @@ class FirstAdapter(
         }
     }
 
-    private fun setNewTiles(newTiles: MutableList<DC_yo.Items>) {
+    private fun setNewTiles(newTiles: MutableList<YoEntity.Items>) {
         this.arr.run {
             clear()
             addAll(newTiles)
@@ -78,7 +78,7 @@ class FirstAdapter(
 
     inner class TodoViewHolder(private val binding: ItemFirstBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DC_yo.Items) {
+        fun bind(item: YoEntity.Items) {
             binding.item = item
             if (activity != null) {
                 Glide.with(activity).load(item.avatar_url).centerCrop().into(binding.ivItemFirst)
@@ -107,7 +107,7 @@ class FirstAdapter(
                 if (charString.length < 2) {
                     arr.addAll(data)
                 } else {
-                    val filteredList = ArrayList<DC_yo.Items>()
+                    val filteredList = ArrayList<YoEntity.Items>()
 //                    for (dto in data) {
 //                        if (dto.title.lowercase(Locale.getDefault()).contains(charString.lowercase(Locale.getDefault()))) {
 //                            filteredList.add(dto);

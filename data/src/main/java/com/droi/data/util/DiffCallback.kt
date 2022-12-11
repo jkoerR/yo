@@ -1,4 +1,4 @@
-package com.droi.util
+package com.droi.data.util
 
 import androidx.recyclerview.widget.DiffUtil
 

@@ -1,13 +1,12 @@
-package com.droi.retrofit
+package com.droi.data.api
 
-import com.droi.model.DC_yo
-import retrofit2.Response
+import com.droi.data.model.YoReponse
 import retrofit2.http.*
 
 
 interface RetrofitService {
 
-//    @GET("mobile-config/test_data_recruit_items.json")
+    //    @GET("mobile-config/test_data_recruit_items.json")
 //    fun recruit(
 ////    @Path("id") id: String?,
 //    ): Call<JsonObject?>?
@@ -17,8 +16,8 @@ interface RetrofitService {
 //    ): Response<JsonObject?>
     @GET("users")
     suspend fun users(
-    @Query("q") q: String?,
-    ): Response<DC_yo.Res?>
+        @Query("q") q: String,
+    ): YoReponse.ResData
 
 
 }

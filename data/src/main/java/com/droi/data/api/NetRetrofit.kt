@@ -1,8 +1,12 @@
-package com.droi.retrofit
+package com.droi.data.api
 
-import com.droi.App
-import com.droi.Const
-import com.droi.util.Logger
+import android.app.Application
+import android.content.SharedPreferences
+import com.droi.data.Const
+import com.droi.data.util.Logger
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,9 +14,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class NetRetrofit {
+class NetRetrofit(application: Application) {
     var slog: String? = null
     val gson = GsonBuilder().setLenient().create()
+    val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(application))
     var interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
         override fun log(s: String) {
 //            Logger.loge("slog :   $s");
@@ -24,7 +29,7 @@ class NetRetrofit {
                 || s.contains("Not Found")
             ) {
                 slog = slog + s + "\n"
-                com.droi.util.Logger.loge("RESULT!!!!   :   " + slog)
+                Logger.loge("RESULT!!!!   :   " + slog)
             }
         }
     }).setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -35,7 +40,7 @@ class NetRetrofit {
         //            .readTimeout(5, TimeUnit.SECONDS)
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
-        .cookieJar(com.droi.App.cookieJar)
+        .cookieJar(cookieJar)
         .addInterceptor(interceptor)
         .build()
     var defaultHttpClient_check = OkHttpClient.Builder() //.connectionPool(cPool)
@@ -67,6 +72,5 @@ class NetRetrofit {
 //        }
 //        return service
 //    }
-
 
 }

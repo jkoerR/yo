@@ -1,24 +1,21 @@
 package com.droi.viewmodel
 
 import android.app.Application
-import android.os.Looper
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.droi.data.util.Logger
 import com.droi.db.AppDatabase
 import com.droi.db.Contacts
-import com.droi.model.DC_yo
-import com.droi.retrofit.RetrofitService
-import com.droi.util.Logger
-import com.droi.util.Util
+import com.droi.domain.model.YoEntity
+import com.droi.domain.usecase.GetUserUseCase
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
-class MainViewModel(application: Application, private val repo: RetrofitService) : BaseViewModel(application) {
+//class MainViewModel(application: Application, private val repo: RetrofitService) : BaseViewModel(application) {
+class MainViewModel(application: Application, private val getUserUseCase: GetUserUseCase) : BaseViewModel(application) {
 
     var gson = Gson()
-    var liveData_Res: MutableLiveData<DC_yo.Res> = MutableLiveData<DC_yo.Res>()
+    var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
     var change: Int  = -1;
     val context = application
 
@@ -27,18 +24,22 @@ class MainViewModel(application: Application, private val repo: RetrofitService)
     }
 
     fun requsetUsers() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repo.users("shop")
-            if (response.isSuccessful) {
-                response.body()?.let { setLike(it) }
-            } else {
-                var handler = android.os.Handler(Looper.getMainLooper())
-                com.droi.util.Util.showToast("${response.code()} ${response.message()}")
-            }
+//        liveData_Res = getUserUseCase.invoke("shop",)
+        getUserUseCase("shop",viewModelScope){
+            liveData_Res.postValue(it)
         }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val response = repo.users("shop")
+//            if (response.isSuccessful) {
+//                response.body()?.let { setLike(it) }
+//            } else {
+//                var handler = android.os.Handler(Looper.getMainLooper())
+//                com.droi.util.Util.showToast("${response.code()} ${response.message()}")
+//            }
+//        }
     }
 
-    fun setLike(body: DC_yo.Res) {
+    fun setLike(body: YoEntity.Res) {
         val db = AppDatabase.getInstance(context)
         for ((i, b) in body.items.withIndex()) {
             val result = db?.contactsDao()?.findByResult(b.id)
@@ -56,7 +57,7 @@ class MainViewModel(application: Application, private val repo: RetrofitService)
         val item = res?.items?.get(position)
         if (item != null) {
             val result = db?.contactsDao()?.findByResult(item.id)
-            com.droi.util.Logger.loge("result   ${result}")
+            Logger.loge("result   ${result}")
             if (result == null) {
                 db?.contactsDao()?.insert(Contacts(0,item.id))
                 item.like = true

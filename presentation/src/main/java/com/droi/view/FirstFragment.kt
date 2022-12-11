@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.droi.BaseFragment
 import com.droi.R
+import com.droi.data.util.Logger
 import com.droi.databinding.FragmentFirstBinding
-import com.droi.model.DC_yo
-import com.droi.ui.CustomRecyclerDecoration_Ve
+import com.droi.domain.model.YoEntity
 import com.droi.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import org.koin.android.ext.android.inject
@@ -45,8 +45,9 @@ class FirstFragment : BaseFragment() {
 //        binding.rvRecruit.layoutManager = GridLayoutManager(requireActivity(),2)
         firstAdapter = FirstAdapter(this, requireActivity())
         binding.rvRecruit.adapter = firstAdapter
-        val adapterobseverRecruit: Observer<DC_yo.Res> =
+        val adapterobseverRecruit: Observer<YoEntity.Res> =
             Observer {
+                Logger.loge("liveData_Res   ${it}")
                 firstAdapter.diff(it.items, "",model.change)
                 model.change = -1
                 stopShimmer(binding.sfRecruit)

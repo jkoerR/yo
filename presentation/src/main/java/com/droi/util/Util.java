@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.droi.App;
-import com.droi.App;
+import com.droi.data.util.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +47,6 @@ public class Util extends AppCompatActivity {
                 }
             }
         });
-
     }
     public static String myFormatter(Double num) {
         try {

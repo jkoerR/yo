@@ -4,45 +4,36 @@ import android.app.Application
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import okhttp3.CookieJar
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
-import java.util.*
 
 class App : Application() {
     init {
-        com.droi.App.Companion.instance = this
-
+        instance = this
     }
 
     override fun onCreate() {
         super.onCreate()
-        com.droi.App.Companion.instance = this
-        com.droi.App.Companion.gMapTmpChunk = HashMap()
-        com.droi.App.Companion.cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(this))
+        instance = this
+        gMapTmpChunk = HashMap()
 
         startKoin {
             androidContext(this@App)
 //            androidLogger()
             // 위의 메서드 2개는 없어도 작동하긴 한다
             /* modules() : 컨테이너에 로드할 Koin 모듈 목록 설정. listOf()로 appModule을 구성한 예제가 있었다 */
-            modules(com.droi.appModule)
+            modules(appModule)
         }
-
-
-//        retrofitService = NetRetrofit().getService(this)
     }
 
     companion object {
-        @kotlin.jvm.JvmField
+        @JvmField
         var isQr: Boolean = false
         var move_tap: String = ""
         var instance: com.droi.App? = null
         var dialog: Dialog? = null
         lateinit var gMapTmpChunk: HashMap<String, Any>
+//        lateinit var cookieJar: CookieJar
         fun disProgress() {
             Handler(Looper.getMainLooper()).postDelayed(
                 {
@@ -60,8 +51,7 @@ class App : Application() {
             )
         }
 
-        lateinit var cookieJar: CookieJar
-//        lateinit var retrofitService : RetrofitService
+
     }
 
     override fun onTerminate() {
